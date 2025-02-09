@@ -2,116 +2,163 @@
 
 import { useState } from "react";
 
+// Define the type for translations
+type Language = "en" | "pidgin" | "yoruba";
+
+const translations: Record<
+  Language,
+  {
+    question: string;
+    yes: string;
+    no: string;
+    funnyResponses: string[];
+    loveMessage: string;
+  }
+> = {
+  en: {
+    question: "Mama Mia, will you be my Valentine?",
+    yes: "Yes",
+    no: "No 😥",
+    funnyResponses: [
+      "Are you sure??🙄",
+      "Really sure?🤔",
+      "Are you positive???😶",
+      "Please my love...🙏",
+      "Just think about it🥺",
+      "If you say no, I'll be very sad🙁",
+      "I'll be very very sad😕",
+      "I'll be very very very sad😓",
+      "I'll be very very very very sad😖",
+      "Ok fine😡, I'll stop asking...",
+      "Just kidding, PLEASE SAY YES🙏",
+      "You're breaking my heart😥😥😥",
+    ],
+    loveMessage: "Thank you, my dearest Mama Mia. You’ve made me the happiest person alive. I love you endlessly!",
+  },
+  pidgin: {
+    question: "Mama Mia, you go be my Val?",
+    yes: "I go be your Val 💕",
+    no: "Mbanu 😥",
+    funnyResponses: [
+      "You sure so?🙄",
+      "You sure sure?🤔",
+      "You wan break my heart??😶",
+      "Abeg na, my love...🙏",
+      "Abeg think am well🥺",
+      "If you talk no, I go cry🙁",
+      "I go cry die o😕",
+      "E go pain me scatter 😓",
+      "You wan make I no sleep???😖",
+      "Ok, I no go ask again😡...",
+      "No vex, abeg SAY YES🙏",
+      "You dey scatter my heart o😥😥😥",
+    ],
+    loveMessage: "Mama Mia, na you be my world. You don make me the happiest person. I go love you till forever finish!",
+  },
+  yoruba: {
+    question: "Mama Mia, ṣe iwọ yoo jẹ Val mi?",
+    yes: "Bẹẹni, mo fẹran rẹ 💕",
+    no: "Rara 😥",
+    funnyResponses: [
+      "Ṣe o da mi loju?🙄",
+      "Ṣe o mọ daju gaan?🤔",
+      "O fẹ ṣe mi ni ipọnju??😶",
+      "Jọwọ, ifẹ mi...🙏",
+      "Ronú daradara o🥺",
+      "Ti o ba sọ rara, inu mi yoo bajẹ 🙁",
+      "O ṣe mi le koko o😕",
+      "Inu mi yoo bajẹ ju😓",
+      "O fẹ ki n ṣubu lulẹ??😖",
+      "O daa, mi o ni bi o lẹẹkan si😡...",
+      "Ẹ ṣe idariji, JOWỌ sọ BẸẸNI🙏",
+      "O n fọ ọkàn mi o😥😥😥",
+    ],
+    loveMessage: "Mama Mia, iwọ ni ẹmi ati ọkàn mi. O ti jẹ ki n di eniyan ayọ julọ. Mo nifẹ rẹ laelae!",
+  },
+};
+
 export default function Page() {
   const [noCount, setNoCount] = useState(0);
   const [yesPressed, setYesPressed] = useState(false);
-  const [lang, setLang] = useState("en");
+  const [lang, setLang] = useState<Language>("en"); // Explicitly set type
 
-  const translations = {
-    en: {
-      question: "Will you be my Valentine, Mama Mia? 💖",
-      yes: "Yes! 😍",
-      no: "No 😥",
-      funnyResponses: [
-        "No",
-        "Are you sure, my love? 🥺",
-        "Think about it again! 🤔",
-        "Mama Mia, don’t break my heart! 💔",
-        "Please, my heart is fragile! 🥹",
-        "If you say no, I’ll cry! 😭",
-        "You’re too cute to say no! 🥰",
-        "Last chance, my queen! 👑",
-      ],
-      loveMessage: "My love, my heart beats only for you. Every moment with you is like a dream, and I wouldn't trade it for anything. You are my forever, my happiness, my everything. 💖💋",
-    },
-    pidgin: {
-      question: "Mama Mia, you go be my Val? 💖",
-      yes: "I go do am! 😍",
-      no: "Mbanu 😥",
-      funnyResponses: [
-        "Nooo",
-        "You dey sure so? 🥺",
-        "Abeg reason am again! 🤔",
-        "Mama Mia, no wound my heart o! 💔",
-        "Abeg, I no fit chop breakfast! 🥹",
-        "If you say no, I go start dey cry o! 😭",
-        "You too fine to say no! 🥰",
-        "Last chance o, my queen! 👑",
-      ],
-      loveMessage: "Ah! Mama Mia, my belle dey sweet me die! You be my peace, my joy, my wahala wey I no go ever tire for. I love you pass anything! 💖💋",
-    },
-    yoruba: {
-      question: "Mama Mia, se o fe je oko mi? 💖",
-      yes: "Beni o! 😍",
-      no: "Rara o 😥",
-      funnyResponses: [
-        "Rara",
-        "Se o da? 🥺",
-        "Tunto ro e o! 🤔",
-        "Mama Mia, e jo, ma binu si mi o! 💔",
-        "Ma jeki n kan’ra mi o! 🥹",
-        "Ti o ba so rara, emi a sunkun o! 😭",
-        "O fine ju lati so rara! 🥰",
-        "Eleyi ni ayeye o, my queen! 👑",
-      ],
-      loveMessage: "Mama Mia, ife ti mo ni si e ko ni lara, o wa jin, o wa tobi. Iwo ni ayaba mi, opo ewa, eni ti mo fe titi lai. Mo ni ife re ju gbogbo aye lo. 💖💋",
-    },
-  };
-
-  const t = translations[lang];
   const yesButtonSize = noCount * 20 + 16;
 
   const handleNoClick = () => {
-    setNoCount((prev) => prev + 1);
+    setNoCount(noCount + 1);
   };
 
-  const toggleLanguage = () => {
-    const languages = Object.keys(translations);
-    const currentIndex = languages.indexOf(lang);
-    const nextIndex = (currentIndex + 1) % languages.length;
-    setLang(languages[nextIndex]);
+  const handleLanguageChange = (newLang: Language) => {
+    setLang(newLang);
   };
+
+  const t = translations[lang]; // Translations lookup
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen text-center">
-      {/* Language Switch Button */}
-      <button
-        onClick={toggleLanguage}
-        className="absolute top-5 left-5 bg-blue-500 text-white font-bold py-2 px-4 rounded"
-      >
-        Switch to {lang === "en" ? "Pidgin" : lang === "pidgin" ? "Yoruba" : "English"}
-      </button>
+    <div className="flex flex-col items-center justify-center h-screen -mt-16">
+      {/* Language Selector */}
+      <div className="absolute top-4 left-4">
+        <button
+          className={`mx-2 px-3 py-1 rounded ${
+            lang === "en" ? "bg-blue-500 text-white" : "bg-gray-200"
+          }`}
+          onClick={() => handleLanguageChange("en")}
+        >
+          English
+        </button>
+        <button
+          className={`mx-2 px-3 py-1 rounded ${
+            lang === "pidgin" ? "bg-blue-500 text-white" : "bg-gray-200"
+          }`}
+          onClick={() => handleLanguageChange("pidgin")}
+        >
+          Pidgin
+        </button>
+        <button
+          className={`mx-2 px-3 py-1 rounded ${
+            lang === "yoruba" ? "bg-blue-500 text-white" : "bg-gray-200"
+          }`}
+          onClick={() => handleLanguageChange("yoruba")}
+        >
+          Yoruba
+        </button>
+      </div>
 
       {yesPressed ? (
-        <div>
+        <>
           <img
             src="https://gifdb.com/images/high/animated-bear-kiss-enngnq0gm2r405bt.webp"
-            alt="Romantic"
-            className="mx-auto h-60"
+            alt="Animated Bear Kiss"
           />
-          <h1 className="text-4xl md:text-6xl font-bold text-red-600">{t.loveMessage}</h1>
-        </div>
+          <div className="text-[2rem] font-bold text-center leading-tight md:text-5xl md:leading-snug bg-gradient-to-r from-green-600 via-yellow-600 to-red-600 inline-block text-transparent bg-clip-text">
+            {t.loveMessage}
+          </div>
+        </>
       ) : (
         <>
           <img
             className="h-[200px]"
             src="https://gifdb.com/images/high/cute-love-bear-roses-ou7zho5oosxnpo6k.gif"
-            alt="Cute Love"
+            alt="Cute Love Bear"
           />
-          <h1 className="text-3xl md:text-5xl font-extrabold">{t.question}</h1>
-          <div className="mt-8 space-x-5">
+          <h1 className="text-[2rem] text-center leading-tight md:text-5xl md:leading-snug bg-gradient-to-r from-green-600 via-yellow-600 to-red-600 inline-block text-transparent bg-clip-text">
+            {t.question}
+          </h1>
+          <div className="text-center space-y-5">
             <button
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded"
+              className={`bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-4`}
               style={{ fontSize: yesButtonSize }}
               onClick={() => setYesPressed(true)}
             >
               {t.yes}
             </button>
             <button
-              className="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-6 rounded"
               onClick={handleNoClick}
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
             >
-              {noCount === 0 ? t.no : t.funnyResponses[noCount % t.funnyResponses.length]}
+              {noCount === 0
+                ? t.no
+                : t.funnyResponses[noCount % t.funnyResponses.length]}
             </button>
           </div>
         </>
